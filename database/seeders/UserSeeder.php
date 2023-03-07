@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
 
         $user->name = "Antonio Italiano";
         $user->email = "antoitalia221@gmail.com";
-        $user->password = bcrypt('Password');
+        $user->password = 'Password';
 
         $user->save();
     }
