@@ -32,7 +32,18 @@
                 <td>{{$project->url}}</td>
                 <td>{{$project->updated_at}}</td>
                 <td>
-                    <a href="{{ route('admin.projects.show', $project->id)}}" class="btn btn-primary">View</a>
+
+                    {{-- BUTTON  --}}
+                    <div class="d-flex">
+                        <form action="{{ route('admin.projects.destroy', $project->id) }}" method="POST" class="delete-form"
+                            data-name="{{ $project->title }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Eliminate</button>
+                        </form>
+                        <a href="{{ route('admin.projects.show', $project->id)}}" class="btn btn-primary mx-2">View</a>
+                    </div>
+
                 </td>
             </tr>
             @empty
