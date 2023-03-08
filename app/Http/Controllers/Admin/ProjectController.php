@@ -41,7 +41,9 @@ class ProjectController extends Controller
 
         $project->save();
         
-        return to_route('admin.projects.show', $project->id);
+        return to_route('admin.projects.show', $project->id)
+            ->with('type', 'success')
+            ->with('message', "project $project->title created successfully");
     }
 
     /**
@@ -71,7 +73,9 @@ class ProjectController extends Controller
 
         $project->update($data);
 
-        return to_route('admin.projects.show', $project->id);
+        return to_route('admin.projects.show', $project->id)
+            ->with('type', 'success')
+            ->with('message', 'Change made successfully');
     }
 
     /**
