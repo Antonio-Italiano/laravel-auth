@@ -42,6 +42,7 @@
                             <button type="submit" class="btn btn-danger">Eliminate</button>
                         </form>
                         <a href="{{ route('admin.projects.show', $project->id)}}" class="btn btn-primary mx-2">View</a>
+                        <a href="{{ route('admin.projects.edit', $project->id) }}" class="btn btn-success">Edit</a>
                     </div>
 
                 </td>

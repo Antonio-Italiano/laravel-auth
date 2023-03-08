@@ -25,6 +25,7 @@
             @method('DELETE')
             <button type="submit" class="btn btn-danger">Eliminate</button>
         </form>
+        <a href="{{ route('admin.projects.edit', $project->id) }}" class="btn btn-success">Edit</a>
     </div>
     
 @endsection
