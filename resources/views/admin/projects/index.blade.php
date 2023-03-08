@@ -3,8 +3,9 @@
 @section('title', 'Projects')
     
 @section('content')
-    <header>
+    <header class="d-flex align-items-center justify-content-between my-5">
         <h1>Projects</h1>
+        <a href="{{ route('admin.projects.create')}}" class="btn btn-success">Added Project</a>
     </header>
 
     <table class="table table-dark table-striped">
@@ -31,7 +32,7 @@
                 <td>{{$project->url}}</td>
                 <td>{{$project->updated_at}}</td>
                 <td>
-                    <a href="{{ route('admin.projects.show', $project->id)}}" class="btn btn-primary">Vedi</a>
+                    <a href="{{ route('admin.projects.show', $project->id)}}" class="btn btn-primary">View</a>
                 </td>
             </tr>
             @empty
