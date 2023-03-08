@@ -31,6 +31,7 @@
 
         <main class="container">
             @include('includes.alerts.session')
+            @include('includes.alerts.errors')
             @yield('content')
         </main>
     </div>

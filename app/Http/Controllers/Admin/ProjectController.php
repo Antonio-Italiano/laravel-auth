@@ -6,6 +6,8 @@ use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
+
 class ProjectController extends Controller
 {
     /**
@@ -32,6 +34,20 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
+
+        $request->validate([
+            'title' => 'required|string|unique:projects|max:100',
+            'description' => 'required|string',
+            'image' => 'nullable|url',
+            'url' => 'nullable|url',
+        ], [
+            'title.required' => 'The title is mandatory',
+            'title.unique' => "The name $request->title is already present",
+            'title.max' => 'Exceeded the maximum number of characters :max',
+            'description.required' => 'Description is required',
+            'image.url' => 'The link does not seem valid'
+        ]);
+
         $data = $request->all();
         $data['slug'] = Str::slug($data['title'], '-');
         
@@ -67,6 +83,19 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
+        $request->validate([
+            'title' => ['required','string', Rule::unique('projects')->ignore($project->id) ,'max:100'],
+            'description' => 'required|string',
+            'image' => 'nullable|url',
+            'url' => 'nullable|url',
+        ], [
+            'title.required' => 'The title is mandatory',
+            'title.unique' => "The name $request->title is already present",
+            'title.max' => 'Exceeded the maximum number of characters :max',
+            'description.required' => 'Description is required',
+            'image.url' => 'The link does not seem valid'
+        ]);
+        
         $data = $request->all();
 
         $project->slug = Str::slug($data['title'], '-');

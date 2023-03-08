@@ -1,15 +1,3 @@
-{{-- Alert errori --}}
-
-{{-- @if ($errors->any())
-  <div class="alert alert-danger">
-    <ul>
-      @foreach ($errors->all() as $error)
-        <li>{{ $error }}</li>
-      @endforeach
-    </ul>
-  </div>
-@endif --}}
-
 {{-- Form --}}
 @if ($project->exists)
   <form action="{{ route('admin.projects.update', $project->id) }}" method="POST" novalidate>
@@ -61,6 +49,13 @@
         <label for="description" class="form-label">Description</label>
         <textarea name="description" id="description" cols="50" rows="8"
           class="form-control @error('description') is-invalid @enderror">{{ old('description', $project->description) }}</textarea>
+          @error('description')
+        <div class="invalid-feedback">
+          {{ $message }}
+        </div>
+        @else
+        <small class="text-muted">Enter Description</small>
+        @enderror 
       </div>
     </div>
 
