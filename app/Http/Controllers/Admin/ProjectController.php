@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
@@ -38,21 +39,26 @@ class ProjectController extends Controller
         $request->validate([
             'title' => 'required|string|unique:projects|max:100',
             'description' => 'required|string',
-            'image' => 'nullable|url',
+            'imag' => 'nullable|image|mimes:jpeg,jpg,png',
             'url' => 'nullable|url',
         ], [
             'title.required' => 'The title is mandatory',
             'title.unique' => "The name $request->title is already present",
             'title.max' => 'Exceeded the maximum number of characters :max',
             'description.required' => 'Description is required',
-            'image.url' => 'The link does not seem valid'
+            'image.mimes' => 'accepted extensions are :mimes',
         ]);
 
         $data = $request->all();
         $data['slug'] = Str::slug($data['title'], '-');
         
         $project = new Project();
-        
+
+        if(array_key_exists('image', $data)){
+            $img_url = Storage::put('projects', $data['image'] );
+            $data['image'] = $img_url;
+        }
+
         $project->fill($data);
 
         $project->save();
@@ -83,22 +89,33 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
+        // dd($project);
+
         $request->validate([
             'title' => ['required','string', Rule::unique('projects')->ignore($project->id) ,'max:100'],
             'description' => 'required|string',
-            'image' => 'nullable|url',
+            'imag' => 'nullable|image|mimes:jpeg,jpg,png',
             'url' => 'nullable|url',
         ], [
             'title.required' => 'The title is mandatory',
             'title.unique' => "The name $request->title is already present",
             'title.max' => 'Exceeded the maximum number of characters :max',
             'description.required' => 'Description is required',
-            'image.url' => 'The link does not seem valid'
+            'image.mimes' => 'accepted extensions are :mimes',
         ]);
         
         $data = $request->all();
 
         $project->slug = Str::slug($data['title'], '-');
+
+        if (array_key_exists('image', $data)) {
+            //se c'è gia un url lo sostituisce con quello che mandiamo
+            if ($project->image) {
+                Storage::delete($project->image);
+            }
+            $img_url = Storage::put('projects', $data['image']);
+            $data['image'] = $img_url;
+        }
 
         $project->update($data);
 
@@ -112,6 +129,8 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        if($project->image) Storage::delete($project->image);
+        
         $project->delete();
 
         return to_route('admin.projects.index')

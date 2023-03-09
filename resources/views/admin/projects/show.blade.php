@@ -13,7 +13,7 @@
         </header>
     <div class="clearfix">
         @if ($project->image)
-        <img class="me-4 mb-4 float-start" src="{{$project->image}}" alt="{{$project->slug}}">            
+        <img class="me-4 mb-4 float-start" src="{{ asset('storage/' . $project->image) }}" alt="{{$project->slug}}">            
         @endif
         <p>{{$project->description}}</p>
     </div>
