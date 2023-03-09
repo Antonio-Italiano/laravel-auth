@@ -9,7 +9,7 @@
 
   @csrf
 
-  <div class="row">
+  <div class="row py-3">
 
     {{-- TITLE  --}}  
     <div class="col-6">
@@ -26,6 +26,15 @@
         @enderror
       </div>
     </div>
+
+    {{-- SLUG PREVIEW  --}}  
+    <div class="col-6">
+      <div class="my-4 w-75">
+        <label for="slug" class="form-label">Slug</label>
+        <input type="text" class="form-control" id="slug"
+        name="slug" disabled value="{{ Str::slug(old('slug', $project->slug), '-') }}">
+      </div>
+    </div>   
 
     {{-- URL  --}}
     <div class="col-6">
@@ -83,12 +92,16 @@
       </div>
     </div>
     --}}
-  </div>
-
-  <hr>
-  <div class="d-flex justify-content-between">
-    <a class="btn btn-secondary" href="{{route('admin.projects.index')}}">Indietro</a>
-    <button type="submit" class="btn btn-success">Save</button>
+    
+    <hr>
+    <div class="d-flex justify-content-between">
+      <a class="btn btn-secondary" href="{{route('admin.projects.index')}}">Indietro</a>
+      <button type="submit" class="btn btn-success">Save</button>
+    </div>
   </div>
   
 </form>
+
+@section('scripts')
+ @vite(['resources/js/preview-slag.js'])    
+@endsection
